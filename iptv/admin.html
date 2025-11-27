@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel de Administração - CineStream</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .admin-main { padding-top: 100px; max-width: 1200px; margin: 0 auto; min-height: 80vh; }
+        .admin-section { margin-bottom: 3rem; padding: 2rem; background: #141414; border-radius: 8px; }
+        .search-admin { display: flex; gap: 1rem; margin-bottom: 2rem; }
+        .search-admin input { flex-grow: 1; padding: 0.8rem; border-radius: 4px; border: 1px solid #333; background: #222; color: white; }
+        .search-admin button { padding: 0.8rem 1.5rem; background: #007bff; border: none; border-radius: 4px; color: white; cursor: pointer; }
+        
+        /* ORGANIZAÇÃO DOS CARDS: Garante que todos os containers de resultado usem o layout movies-carousel */
+        .movies-carousel { 
+            flex-wrap: wrap; 
+            justify-content: start; 
+            overflow-x: unset; /* Remove scroll horizontal se herdado */
+            display: flex; /* Garante o display flex */
+            gap: 1.5rem; /* Espaçamento entre os cards */
+        } 
+
+        /* AJUSTES NOS BOTÕES DO ADMIN (Usando o estilo .details-button do style.css) */
+        /* Botão de Adicionar (Usado em busca e sugestões) */
+        .movie-card .btn-add { 
+            background: var(--primary-color); 
+            padding: 0.8rem;
+            width: 100%;
+            border: none;
+            color: white;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .movie-card .btn-add.added { 
+            background: #28a745; /* Cor verde para Adicionado */
+        }
+        .movie-card .btn-add:disabled {
+            background: #28a745; /* Mantém verde quando disabled (adicionado) */
+            cursor: default;
+        }
+        
+        /* Botão de Remover (Usado na lista de ativo) */
+        .movie-card .btn-remove { 
+            background: #660000; /* Cor vermelha escura para Remover */
+            padding: 0.8rem;
+            width: 100%;
+            border: none;
+            color: white;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        .status-message { margin-top: 1rem; padding: 1rem; border-radius: 4px; background: #333; color: white; display: none; }
+        /* Estilos de abas */
+        .tabs-container { display: flex; border-bottom: 2px solid #333; }
+        .tab-button { padding: 0.5rem 1rem; border: none; background: #222; color: #b3b3b3; cursor: pointer; border-radius: 4px 4px 0 0; font-weight: 400; transition: all 0.3s ease; }
+        .tab-button.active { background: var(--primary-color) !important; color: white !important; border-bottom: 2px solid var(--primary-color) !important; }
+        .tab-button:not(.active):hover { background: #444 !important; color: white !important; }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <nav class="navbar navbar-search">
+            <div class="logo">
+                <a href="admin.html"><h1>CineStream - Admin</h1></a> 
+            </div>
+            <div class="back-btn-container">
+                <a href="auth/logout.php" class="logout-button"><i class="fas fa-sign-out-alt"></i> Sair</a>
+            </div>
+        </nav>
+    </header>
+    <main class="admin-main">
+        <h2>Gerenciamento de Conteúdo</h2>
+
+        <section class="admin-section">
+            <h3>1. Buscar e Adicionar Conteúdo (TMDB)</h3>
+            <div class="search-admin">
+                <input type="text" id="admin-search-input" placeholder="Buscar filme ou série por nome...">
+                <button id="admin-search-btn"><i class="fas fa-search"></i> Buscar</button>
+            </div>
+            
+            <div id="loading-state" class="loading" style="display: none;">Buscando...</div>
+            <div id="admin-status" class="status-message"></div>
+
+            <div id="tmdb-results" class="movies-carousel">
+                </div>
+        </section>
+
+        <section class="admin-section">
+            <h3>3. Sugestões de Conteúdo (TMDB Popular)</h3>
+            <div class="tabs-container" style="margin-bottom: 1rem;">
+                <button class="tab-button" data-type="movie" id="tab-movie">
+                    Filmes Populares
+                </button>
+                <button class="tab-button" data-type="tv" id="tab-tv">
+                    Séries Populares
+                </button>
+            </div>
+            
+            <div id="suggestion-results" class="movies-carousel">
+                <div class="initial-message" style="text-align: center; padding: 2rem; color: #b3b3b3;">
+                    Clique em uma aba acima para carregar as sugestões populares do TMDB.
+                </div>
+            </div>
+        </section>
+
+        <section class="admin-section">
+            <h3>2. Conteúdo Ativo (Para Remoção Rápida)</h3>
+            <div id="active-content-list" class="movies-carousel">
+                </div>
+        </section>
+    </main>
+    <footer>
+        </footer>
+    <script src="js/admin.js"></script>
+    </body>
+</html>
