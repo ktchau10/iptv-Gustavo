@@ -43,7 +43,7 @@ O projeto utiliza uma arquitetura **LAMP/XAMPP** com integrações externas:
     * Verifique e ajuste as credenciais de acesso ao banco se necessário (o padrão é `DB_USER: 'root'` e `DB_PASSWORD: ''`).
 5.  **Acesso ao Projeto:**
     ```
-    http://localhost/cinestream/iptv/
+    http://localhost/iptv/
     ```
 
 ---
