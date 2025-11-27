@@ -82,18 +82,6 @@ Para o acesso normal de visualização do catálogo, basta utilizar o link **"Ca
 
 ```
 iptv/
-├── css/
-│   └── style.css         # Estilos globais
-├── js/
-│   ├── auth.js          # Autenticação
-│   ├── main.js          # Lógica principal
-│   └── search.js        # Sistema de busca
-├── index.html           # Página inicial
-├── search.html          # Resultados de busca
-└── movie-details.html   # Detalhes do filme
-
-
-iptv/
 ├── api/
 │   └── admin/
 │   └── content/
