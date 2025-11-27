@@ -1,42 +1,87 @@
 # 🎬 CineStream
 
-Sistema de streaming de filmes que utiliza a API do TMDB (The Movie Database) para exibir informações sobre filmes, permitindo busca por texto e categorias.
+Sistema de streaming de filmes e séries que utiliza a API do **TMDB (The Movie Database)** para metadados e possui um sistema de **Catálogo Curado** e **Painel Administrativo** com autenticação de usuário.
+
+---
 
 ## 🛠 Tecnologias Utilizadas
 
-- HTML5
-- CSS3
-- JavaScrip
-- API TMDB v3
+O projeto utiliza uma arquitetura **LAMP/XAMPP** com integrações externas:
+
+* **Frontend:** HTML5, CSS3, JavaScript.
+* **Backend:** **PHP** (para API REST de autenticação, favoritos e catálogo).
+* **Banco de Dados:** **MySQL** (via PDO).
+* **APIs Externas:**
+    * **TMDB API v3:** Metadados de filmes e séries (Chave: `2c19bf5eb981d886122e44a78fed935d`).
+    * **Superflix API:** Link para o player de vídeo incorporado (`https://superflixapi.asia/`).
+
+---
 
 ## 📋 Pré-requisitos
 
-- XAMPP (7.4 ou superior)
-- Navegador web moderno
-- Conexão com internet
+* **XAMPP / WAMP / MAMP** (com Apache e MySQL ativos).
+* **PHP** (Versão 7.4 ou superior).
+* Navegador web moderno.
+* Conexão com internet.
 
-## 🚀 Instalação
+---
 
-1. Inicie o XAMPP e ative o Apache:
-```bash
-sudo /Applications/XAMPP/xamppfiles/xampp start
-```
+## 🚀 Instalação e Configuração
 
-2. Clone o repositório na pasta htdocs:
-```bash
-cd /Applications/XAMPP/xamppfiles/htdocs/
-git clone [URL_DO_REPOSITÓRIO] iptv1
-```
+1.  **Inicie o Apache e o MySQL** no seu ambiente XAMPP/WAMP/MAMP.
+2.  **Clone** o repositório na pasta `htdocs` (ou equivalente) e renomeie-o (ex: para `cinestream`):
+    ```bash
+    cd /Applications/XAMPP/xamppfiles/htdocs/
+    git clone [URL_DO_REPOSITÓRIO] cinestream
+    ```
+3.  **Configuração do Banco de Dados:**
+    * Acesse o phpMyAdmin.
+    * Crie um novo banco de dados chamado **`cinestream`**.
+    * Importe o arquivo **`iptv/database/schema.sql`** para criar as tabelas necessárias (`usuarios`, `catalogo_curado`, `favoritos`, etc.).
+4.  **Configuração PHP:**
+    * Abra o arquivo **`iptv/database/config.php`**.
+    * Verifique e ajuste as credenciais de acesso ao banco se necessário (o padrão é `DB_USER: 'root'` e `DB_PASSWORD: ''`).
+5.  **Acesso ao Projeto:**
+    ```
+    http://localhost/cinestream/iptv/
+    ```
 
-3. Acesse o projeto:
-```
-http://localhost/iptv1/
-```
+---
+
+## 🔒 Credenciais de Acesso (Login)
+
+O sistema possui dois tipos de acesso: **Usuário Comum** e **Administrador**.
+
+### Acesso de Administrador (Pré-cadastrado)
+
+Para acessar o **Painel de Administração** (`admin.html`) e gerenciar o catálogo, utilize as seguintes credenciais que devem ser inseridas no banco de dados (`usuarios`):
+
+* **E-mail:** `admin@gmail.com`
+* **Senha:** `12345678a@`
+
+O login com estas credenciais irá redirecionar automaticamente para a página **`admin.html`**.
+
+### Cadastro de Usuário Comum
+
+Para o acesso normal de visualização do catálogo, basta utilizar o link **"Cadastre-se"** na página de login (`login.html`) e criar um novo usuário.
+
+---
+
+## 💡 Funcionalidades Principais
+
+* **Sistema de Autenticação Completo** (Login, Cadastro, Logout).
+* **Catálogo Curado:** O conteúdo em destaque (`index.html`) e as listagens (`index_list.html`) são controlados pelo administrador no banco de dados.
+* **Painel de Administração (`admin.html`):** Permite buscar conteúdo no TMDB e adicionar/remover do catálogo curado.
+* **Busca Mista:** Pesquisa por filmes **E** séries através da barra de busca.
+* **Detalhes e Player:** Visualização de sinopse, elenco e um player funcional para Filmes (por ID IMDb) e Séries (por Temporada/Episódio).
+* **Favoritos:** Usuários podem adicionar filmes/séries à sua lista pessoal.
+
+---
 
 ## 📁 Estrutura do Projeto
 
 ```
-iptv1/
+iptv/
 ├── css/
 │   └── style.css         # Estilos globais
 ├── js/
@@ -46,74 +91,32 @@ iptv1/
 ├── index.html           # Página inicial
 ├── search.html          # Resultados de busca
 └── movie-details.html   # Detalhes do filme
+
+
+iptv/
+├── api/
+│   └── admin/
+│   └── content/
+│   └── favoritos/
+├── auth/
+├── css/
+├── database/
+├── js/
+├── admin.html
+├── cadastro.html
+├── favoritos.html
+├── index.html
+├── index_list.html
+├── login.html
+├── movie-details.html # Página de Detalhes
+└── README.md
 ```
-
-## 🔧 Configuração
-
-O arquivo `js/search.js` contém as configurações da API:
-
-```javascript
-const APP = {
-    api: {
-        key: '2c19bf5eb981d886122e44a78fed935d',
-        baseUrl: 'https://api.themoviedb.org/3',
-        imageUrl: 'https://image.tmdb.org/t/p',
-        language: 'pt-BR'
-    }
-}
-```
-
-## 💡 Funcionalidades
-
-- Busca de filmes por texto
-- Filtro por categorias:
-  - Ação
-  - Comédia
-  - Drama
-  - Terror
-  - Aventura
-- Visualização detalhada de filmes
-- Sistema de favoritos
-- Design responsivo
-
-## 🔍 Como Usar
-
-1. **Página Inicial**
-   - Navegue pelos filmes em destaque
-   - Use a barra de pesquisa
-   - Selecione uma categoria
-
-2. **Busca**
-   - Digite um termo na barra de pesquisa
-   - Clique em uma categoria disponível
-
-3. **Detalhes do Filme**
-   - Clique em "Ver detalhes" em qualquer filme
-   - Acesse informações completas
-
-## ⚠️ Solução de Problemas
-
-1. **Página em branco:**
-   - Verifique se o Apache está rodando
-   - Confirme o caminho: `/Applications/XAMPP/xamppfiles/htdocs/iptv1`
-
-2. **Imagens não carregam:**
-   - Verifique sua conexão com internet
-   - Confirme se a API key está ativa
-
-3. **Busca não funciona:**
-   - Abra o console (F12) para verificar erros
-   - Limpe o cache do navegador
 
 ## 👤 Autor
 
-[SEU_NOME]
-- Email: [SEU_EMAIL]
-- GitHub: [@seu_usuario](https://github.com/seu_usuario)
-
-## 📄 Licença
-
-Este projeto está sob a licença MIT.
+Gustavo Fernandes
+- Email: gh5857750@gmail.com
+- GitHub: (https://github.com/ktchau10)
 
 ---
-Desenvolvido como projeto acadêmico para [NOME_DA_INSTITUIÇÃO].
+Desenvolvido como projeto acadêmico para UFOPA - Universiade Federal do Oeste do Pará.
